@@ -109,7 +109,7 @@
                                              role="alert" id="alertValidaciones">
                <p id="alertValidacionesTexto"></p>
          </div>
-          <form class="needs-validation" novalidate>
+          <form class="needs-validation" novalidate id="formAgregar">
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="Name">Nombre</label>
@@ -123,6 +123,13 @@
                 <input type="text" class="form-control" id="Number" placeholder="" value="" autocomplete="off" required>
                 <div class="invalid-feedback">
                  Cantidad inválida
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="Price">Precio</label>
+                <input type="text" class="form-control" id="Price" placeholder="" value="" autocomplete="off" required>
+                <div class="invalid-feedback">
+                 Precio inválido
                 </div>
               </div>
             </div>
@@ -141,6 +148,9 @@
                 </tr>
               </thead>
               <tbody>
+                <thead>
+                
+              </thead>
 
               </tbody>
             </table>
