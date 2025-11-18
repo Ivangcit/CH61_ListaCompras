@@ -9,7 +9,7 @@ const txtNumber = document.getElementById("Number");
 const formularioAgregar = document.getElementById("formAgregar");
 //alerta de validaciones
 const alertValidacionesTexto = document.getElementById(
-  "alertValidacionesTexto"
+    "alertValidacionesTexto"
 );
 const alertValidaciones = document.getElementById("alertValidaciones");
 //tablas
@@ -20,152 +20,163 @@ const tablaListaCompras = document.getElementById("tablaListaCompras");
 const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
 //variables
 let cont = 0;
+let costoTotal = 0;
 let totalEnProductos = 0;
-let datos=new Array();//[];
+let datos = new Array();//[];
 
 //funciones
 function validarCantidad(cantidad) {
-  if (cantidad.length == 0) {
-    return false;
-  }
-  if (isNaN(cantidad)) {
-    return false;
-  }
-  if (Number(cantidad) <= 0) {
-    return false;
-  }
+    if (cantidad.length == 0) {
+        return false;
+    }
+    if (isNaN(cantidad)) {
+        return false;
+    }
+    if (Number(cantidad) <= 0) {
+        return false;
+    }
 
-  return true;
+    return true;
 } //validarCantidad
 
 function getPrecio(precio) {
-  // return Math.floor(Math.random()*100);
-  return Math.round(Math.random() * 10000) / 100;
+    // return Math.floor(Math.random()*100);
+    return Math.round(Math.random() * 10000) / 100;
 } //getprecio
 
 //botones
 
 btnClear.addEventListener("click", function (event) {
-  event.preventDefault();
-  formularioAgregar.reset();
+    event.preventDefault();
+    formularioAgregar.reset();
+    txtName.style.border = "";
+    txtNumber.style.border = "";
+    alertValidacionesTexto.innerHTML = "";
+    alertValidaciones.style.display = "none";
+    cont = 0;
+    localStorage.setItem("resumen", "");
+    localStorage.setItem("datos", "");
+    location.reload();  
 });
 
 btnAgregar.addEventListener("click", function (event) {
-  event.preventDefault();
-  //bandera
-  let isValid = true;
-  //Para que las alertas se reinicien en cada click y marque los errores adecuadamente
-  txtName.style.border = "";
-  txtNumber.style.border = "";
-  //txtPrice.style.border="";
-  alertValidacionesTexto.innerHTML = "";
-  alertValidaciones.style.display = "none";
+    event.preventDefault();
+    //bandera
+    let isValid = true;
+    //Para que las alertas se reinicien en cada click y marque los errores adecuadamente
+    txtName.style.border = "";
+    txtNumber.style.border = "";
+    //txtPrice.style.border="";
+    alertValidacionesTexto.innerHTML = "";
+    alertValidaciones.style.display = "none";
 
-  if (txtName.value.length < 3) {
-    txtName.style.border = "solid thin red";
-    alertValidacionesTexto.innerHTML =
-      "<strong>El nombre del producto es incorrecto</strong><br/>";
-    alertValidaciones.style.display = "block";
-    isValid = false;
-  }
+    if (txtName.value.length < 3) {
+        txtName.style.border = "solid thin red";
+        alertValidacionesTexto.innerHTML =
+            "<strong>El nombre del producto es incorrecto</strong><br/>";
+        alertValidaciones.style.display = "block";
+        isValid = false;
+    }
 
-  if (!validarCantidad(txtNumber.value)) {
-    txtNumber.style.border = "solid thin red";
-    alertValidacionesTexto.innerHTML +=
-      "<strong>La cantidad no es correcta</strong><br/>";
-    alertValidaciones.style.display = "block";
-    isValid = false;
-  }
+    if (!validarCantidad(txtNumber.value)) {
+        txtNumber.style.border = "solid thin red";
+        alertValidacionesTexto.innerHTML +=
+            "<strong>La cantidad no es correcta</strong><br/>";
+        alertValidaciones.style.display = "block";
+        isValid = false;
+    }
 
-  // if(!validarCantidad(txtPrice.value)){
-  //     txtPrice.style.border="solid thin red";
-  //     alertValidacionesTexto.innerHTML+="<strong>El precio no es correcto</strong>";
-  //     alertValidaciones.style.display="block";
-  //     isValid=false;
-  // }
+    // if(!validarCantidad(txtPrice.value)){
+    //     txtPrice.style.border="solid thin red";
+    //     alertValidacionesTexto.innerHTML+="<strong>El precio no es correcto</strong>";
+    //     alertValidaciones.style.display="block";
+    //     isValid=false;
+    // }
 
-  if (isValid) {
-    let precio = getPrecio();
-    //console.log(precio);
-    cont++;
-    totalEnProductos += Number(txtNumber.value);
-    costoTotal += precio * Number(txtNumber.value);
-    // precio unico mostrar
-    //txtPrice.value=precio;
-    //
-    contadorProductos.innerText = cont;
-    productosTotal.innerText = totalEnProductos;
-    precioTotal.innerText = new Intl.NumberFormat("es-MX", {
-      style: "currency",
-      currency: "MXN",
-    }).format(costoTotal);
+    if (isValid) {
+        let precio = getPrecio();
+        //console.log(precio);
+        cont++;
+        totalEnProductos += Number(txtNumber.value);
+        costoTotal += precio * Number(txtNumber.value);
+        // precio unico mostrar
+        //txtPrice.value=precio;
+        //
+        contadorProductos.innerText = cont;
+        productosTotal.innerText = totalEnProductos;
+        precioTotal.innerText = new Intl.NumberFormat("es-MX", {
+            style: "currency",
+            currency: "MXN",
+        }).format(costoTotal);
 
-    let resumen = {
-      cont: cont,
-      totalEnProductos: totalEnProductos,
-      costoTotal: costoTotal,
-    };
+        let resumen = {
+            cont: cont,
+            totalEnProductos: totalEnProductos,
+            costoTotal: costoTotal,
+        };
 
-    localStorage.setItem("resumen", JSON.stringify(resumen));
+        localStorage.setItem("resumen", JSON.stringify(resumen));
 
-    let row = `<tr>
+        let row = `<tr>
         <td>${cont}</td>
         <td>${txtName.value}</td>
         <td>${txtNumber.value}</td>
         <td>${precio}</td>    
         </tr>`;
 
-    let elemento={
-        "cont":cont,
-        "nombre":txtName.value,
-        "cantidad":txtNumber.value,
-        "precio":precio
+        let elemento = {
+            "cont": cont,
+            "nombre": txtName.value,
+            "cantidad": txtNumber.value,
+            "precio": precio
+        }
+
+        datos.push(elemento);
+        localStorage.setItem("datos", JSON.stringify(datos));
+        //console.log(datos);
+
+        tablaListaCompras.insertAdjacentHTML("beforeend", row);
+
+
+        formularioAgregar.reset();
+        txtName.focus();
     }
-
-    datos.push(elemento);
-    localStorage.setItem("datos",JSON.stringify(datos));
-    //console.log(datos);
-
-    tablaListaCompras.insertAdjacentHTML("afterbegin", row);
-    formularioAgregar.reset();
-    txtName.focus();
-  }
 }); //boton agregar
 
 
 
 
 window.addEventListener("load", function (event) {
-  event.preventDefault();
+    event.preventDefault();
 
     if (this.localStorage.getItem("datos") != null) {
-    datos = JSON.parse(this.localStorage.getItem("datos"));
-    datos.forEach((e) => {
-        let row = `<tr>
+        datos = JSON.parse(this.localStorage.getItem("datos"));
+        datos.forEach((e) => {
+            let row = `<tr>
         <td>${e.cont}</td>
         <td>${e.nombre}</td>
         <td>${e.cantidad}</td>
         <td>${e.precio}</td>    
         </tr>`;
-        tablaListaCompras.insertAdjacentHTML("afterbegin", row);
-    });
-    
-  }//!null datos
+            tablaListaCompras.insertAdjacentHTML("afterbegin", row);
+        });
+
+    }//!null datos
 
 
-  if (this.localStorage.getItem("resumen") != null) {
-    let resumen = JSON.parse(this.localStorage.getItem("resumen"));
-    cont = resumen.cont;
-    totalEnProductos = resumen.totalEnProductos;
-    costoTotal = resumen.costoTotal;
-  }//!null RESUMEN
+    if (this.localStorage.getItem("resumen") != null) {
+        let resumen = JSON.parse(this.localStorage.getItem("resumen"));
+        cont = resumen.cont;
+        totalEnProductos = resumen.totalEnProductos;
+        costoTotal = resumen.costoTotal;
+    }//!null RESUMEN
 
-  contadorProductos.innerText = cont;
-  productosTotal.innerText = totalEnProductos;
-  precioTotal.innerText = new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN",
-  }).format(costoTotal);
+    contadorProductos.innerText = cont;
+    productosTotal.innerText = totalEnProductos;
+    precioTotal.innerText = new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+    }).format(costoTotal);
 
 
 
