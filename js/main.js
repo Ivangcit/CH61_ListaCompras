@@ -149,7 +149,7 @@ btnAgregar.addEventListener("click", function (event) {
 window.addEventListener("load", function (event) {
     event.preventDefault();
 
-    if (this.localStorage.getItem("datos") != null) {
+    if (this.localStorage.getItem("datos") != null&&this.localStorage.getItem("datos") != "") {
         datos = JSON.parse(this.localStorage.getItem("datos"));
         datos.forEach((e) => {
             let row = `<tr>
@@ -160,11 +160,10 @@ window.addEventListener("load", function (event) {
         </tr>`;
             tablaListaCompras.insertAdjacentHTML("afterbegin", row);
         });
-
     }//!null datos
 
 
-    if (this.localStorage.getItem("resumen") != null) {
+    if (this.localStorage.getItem("resumen") != null&&this.localStorage.getItem("resumen") != "") {
         let resumen = JSON.parse(this.localStorage.getItem("resumen"));
         cont = resumen.cont;
         totalEnProductos = resumen.totalEnProductos;
