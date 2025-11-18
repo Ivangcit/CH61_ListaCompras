@@ -10,8 +10,16 @@ const formularioAgregar=document.getElementById('formAgregar');
 //alerta de validaciones
 const alertValidacionesTexto=document.getElementById("alertValidacionesTexto");
 const alertValidaciones=document.getElementById("alertValidaciones");
-//
-
+//tablas 
+const contadorProductos=document.getElementById("contadorProductos");
+const productosTotal=document.getElementById("productosTotal");
+const precioTotal=document.getElementById("precioTotal");
+const tablaListaCompras=document.getElementById("tablaListaCompras");
+const cuerpoTabla=tablaListaCompras.getElementsByTagName("tbody").item(0);
+//variables
+let cont=0;
+let totalEnProductos=0;
+let costoTotal=0;
 
 //funciones
 function validarCantidad(cantidad){
@@ -24,6 +32,7 @@ function validarCantidad(cantidad){
     if(Number(cantidad)<=0){
         return false;
     }
+    
     return true;
 }//validarCantidad
 
@@ -67,16 +76,37 @@ btnAgregar.addEventListener('click',function(event){
         isValid=false;
     }
 
-    if(!validarCantidad(txtPrice.value)){
-        txtPrice.style.border="solid thin red";
-        alertValidacionesTexto.innerHTML+="<strong>El precio no es correcto</strong>";
-        alertValidaciones.style.display="block";
-        isValid=false;
-    }    
+    // if(!validarCantidad(txtPrice.value)){
+    //     txtPrice.style.border="solid thin red";
+    //     alertValidacionesTexto.innerHTML+="<strong>El precio no es correcto</strong>";
+    //     alertValidaciones.style.display="block";
+    //     isValid=false;
+    // }    
 
     if(isValid){
         let precio=getPrecio();
         console.log(precio);
+        cont++;
+        totalEnProductos+= Number(txtNumber.value);
+        costoTotal+=precio*(txtNumber.value);
+        // precio unico mostrar 
+        txtPrice.value=precio;
+        //
+        contadorProductos.innerText=cont;
+        productosTotal.innerText=totalEnProductos;
+        precioTotal.innerText=new Intl.NumberFormat("es-MX", 
+                    { style: "currency", currency: "MXN" }).format(costoTotal);
+
+        let row=`<tr>
+        <td>${cont}</td>
+        <td>${txtName.value}</td>
+        <td>${txtNumber.value}</td>
+        <td>${precio}</td>    
+        </tr>`;
+
+        tablaListaCompras.insertAdjacentHTML("afterbegin", row);
+        formularioAgregar.reset();
+        txtName.focus();
     }
 
 
