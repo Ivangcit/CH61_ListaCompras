@@ -21,7 +21,7 @@ const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
 //variables
 let cont = 0;
 let totalEnProductos = 0;
-let costoTotal = 0;
+let datos=new Array();//[];
 
 //funciones
 function validarCantidad(cantidad) {
@@ -86,7 +86,7 @@ btnAgregar.addEventListener("click", function (event) {
 
   if (isValid) {
     let precio = getPrecio();
-    console.log(precio);
+    //console.log(precio);
     cont++;
     totalEnProductos += Number(txtNumber.value);
     costoTotal += precio * Number(txtNumber.value);
@@ -115,21 +115,50 @@ btnAgregar.addEventListener("click", function (event) {
         <td>${precio}</td>    
         </tr>`;
 
+    let elemento={
+        "cont":cont,
+        "nombre":txtName.value,
+        "cantidad":txtNumber.value,
+        "precio":precio
+    }
+
+    datos.push(elemento);
+    localStorage.setItem("datos",JSON.stringify(datos));
+    //console.log(datos);
+
     tablaListaCompras.insertAdjacentHTML("afterbegin", row);
     formularioAgregar.reset();
     txtName.focus();
   }
 }); //boton agregar
 
+
+
+
 window.addEventListener("load", function (event) {
   event.preventDefault();
+
+    if (this.localStorage.getItem("datos") != null) {
+    datos = JSON.parse(this.localStorage.getItem("datos"));
+    datos.forEach((e) => {
+        let row = `<tr>
+        <td>${e.cont}</td>
+        <td>${e.nombre}</td>
+        <td>${e.cantidad}</td>
+        <td>${e.precio}</td>    
+        </tr>`;
+        tablaListaCompras.insertAdjacentHTML("afterbegin", row);
+    });
+    
+  }//!null datos
+
 
   if (this.localStorage.getItem("resumen") != null) {
     let resumen = JSON.parse(this.localStorage.getItem("resumen"));
     cont = resumen.cont;
     totalEnProductos = resumen.totalEnProductos;
     costoTotal = resumen.costoTotal;
-  }
+  }//!null RESUMEN
 
   contadorProductos.innerText = cont;
   productosTotal.innerText = totalEnProductos;
@@ -137,4 +166,8 @@ window.addEventListener("load", function (event) {
     style: "currency",
     currency: "MXN",
   }).format(costoTotal);
+
+
+
+
 }); //window
